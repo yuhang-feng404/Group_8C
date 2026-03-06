@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.db.models import Q
-from .models import User  # 引入我们刚才自定义的 User 模型
+from .models import User
 
 
 def login_view(request):
@@ -28,7 +28,7 @@ def login_view(request):
         else:
 
             context = {
-                'error': '账号或密码错误',
+                'error': 'account or password incorrect',
                 'current_role': selected_role
             }
             return render(request, 'events/login.html', context)
@@ -50,17 +50,17 @@ def register_view(request):
 
 
         if len(password) < 8:
-            context['error'] = '密码最少8位'
+            context['error'] = 'at least 8 letters'
             return render(request, 'events/register.html', context)
 
 
         if password != confirm_password:
-            context['error'] = '两次密码输入不一致'
+            context['error'] = 'two times entered incorrect'
             return render(request, 'events/register.html', context)
 
 
         if User.objects.filter(email=email).exists():
-            context['error'] = '该邮箱已被注册'
+            context['error'] = 'this email have been registered'
             return render(request, 'events/register.html', context)
 
 
